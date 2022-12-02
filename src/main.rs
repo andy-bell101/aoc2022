@@ -1,3 +1,4 @@
+mod utils;
 pub mod day1;
 
 fn run_day1() {
