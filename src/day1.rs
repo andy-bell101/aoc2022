@@ -11,3 +11,9 @@ pub fn part_1(file_name: &str) -> String {
     return get_totals(file_name).iter().max().unwrap().to_string();
 }
 
+pub fn part_2(file_name: &str) -> String {
+    let mut vec = get_totals(file_name);
+    vec.sort();
+    vec.reverse();
+    return vec.iter().take(3).sum::<u64>().to_string();
+}
