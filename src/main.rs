@@ -1,11 +1,19 @@
 mod utils;
-pub mod day1;
 
-fn run_day1() {
-    println!("Day 1, Part 1: {}", day1::part_1("input_files/day1.txt"));
-    println!("Day 1, Part 2: {}", day1::part_2("input_files/day1.txt"));
+pub mod day1;
+pub mod day2;
+
+macro_rules! runner {
+    ($($module:tt),*) => (
+        let mut i = 0;
+        $(
+            i += 1;
+            println!("Day {}, Part 1: {}", i, $module::part_1(format!("input_files/day{}.txt", i).as_str()));
+            println!("Day {}, Part 2: {}", i, $module::part_2(format!("input_files/day{}.txt", i).as_str()));
+        )*
+    )
 }
 
 fn main() {
-    run_day1();
+    runner!(day1, day2);
 }
