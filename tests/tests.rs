@@ -55,3 +55,17 @@ fn day4_part_2_integration_test() {
     let result = aoc2022::day4::part_2(file_name);
     assert_eq!(result, "4");
 }
+
+#[test]
+fn day5_part_1_integration_test() {
+    let file_name = "tests/example_files/day5.txt";
+    let result = aoc2022::day5::part_1(file_name);
+    assert_eq!(result, "CMZ");
+}
+
+#[test]
+fn day5_part_2_integration_test() {
+    let file_name = "tests/example_files/day5.txt";
+    let result = aoc2022::day5::part_2(file_name);
+    assert_eq!(result, "MCD");
+}
