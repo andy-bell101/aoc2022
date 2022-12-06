@@ -35,9 +35,9 @@ macro_rules! runner {
         let mut i = 0;
         $(
             i += 1;
-            let file_name = format!("input_files/day{}.txt", 1);
-            println!("Day {}, Part 1: {}", i, $module::part_1(load_file::load_str!(&file_name)));
-            println!("Day {}, Part 2: {}", i, $module::part_2(load_file::load_str!(&file_name)));
+            let file_contents = load_file::load_str!(format!("../input_files/day{}.txt", i).as_str());
+            println!("Day {}, Part 1: {}", i, $module::part_1(file_contents));
+            println!("Day {}, Part 2: {}", i, $module::part_2(file_contents));
         )*
     )
 }
