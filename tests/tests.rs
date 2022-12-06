@@ -70,3 +70,23 @@ fn day5_part_2_integration_test() {
     let result = aoc2022::day5::part_2(contents);
     assert_eq!(result, "MCD");
 }
+
+#[test]
+fn day6_part_1_integration_test() {
+    let contents = include_str!("example_files/day6.txt");
+    let result: Vec<String> = contents
+        .lines()
+        .map(|line| aoc2022::day6::part_1(line))
+        .collect();
+    assert_eq!(result, vec!["7", "5", "6", "10", "11"]);
+}
+
+#[test]
+fn day6_part_2_integration_test() {
+    let contents = include_str!("example_files/day6.txt");
+    let result: Vec<String> = contents
+        .lines()
+        .map(|line| aoc2022::day6::part_2(line))
+        .collect();
+    assert_eq!(result, vec!["19", "23", "23", "29", "26"]);
+}
