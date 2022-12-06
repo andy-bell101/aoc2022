@@ -1,12 +1,5 @@
 use std::io::Read;
 
-pub fn get_file_contents(file_name: &str) -> String {
-    let mut file = std::fs::File::open(file_name).expect("failed to open input file");
-    let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
-    contents
-}
-
 pub fn divide_iterator_on_predicate<'a, I, P, T>(input: I, pred: P) -> Vec<Vec<T>>
 where
     I: IntoIterator<Item = T>,
