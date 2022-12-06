@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate lazy_static;
+extern crate load_file;
 
 mod utils;
 
@@ -30,12 +31,13 @@ pub mod day24;
 pub mod day25;
 
 macro_rules! runner {
-    ($($module:tt),*) => (
+    ($($module:tt,)*) => (
         let mut i = 0;
         $(
             i += 1;
-            println!("Day {}, Part 1: {}", i, $module::part_1(format!("input_files/day{}.txt", i).as_str()));
-            println!("Day {}, Part 2: {}", i, $module::part_2(format!("input_files/day{}.txt", i).as_str()));
+            let file_name = format!("input_files/day{}.txt", 1);
+            println!("Day {}, Part 1: {}", i, $module::part_1(load_file::load_str!(&file_name)));
+            println!("Day {}, Part 2: {}", i, $module::part_2(load_file::load_str!(&file_name)));
         )*
     )
 }
@@ -47,25 +49,25 @@ fn main() {
         day3,
         day4,
         day5,
-        day6,
-        day7,
-        day8,
-        day9,
-        day10,
-        day11,
-        day12,
-        day13,
-        day14,
-        day15,
-        day16,
-        day17,
-        day18,
-        day19,
-        day20,
-        day21,
-        day22,
-        day23,
-        day24,
-        day25
+        // day6,
+        // day7,
+        // day8,
+        // day9,
+        // day10,
+        // day11,
+        // day12,
+        // day13,
+        // day14,
+        // day15,
+        // day16,
+        // day17,
+        // day18,
+        // day19,
+        // day20,
+        // day21,
+        // day22,
+        // day23,
+        // day24,
+        // day25,
     );
 }

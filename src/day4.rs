@@ -1,4 +1,3 @@
-use crate::utils::get_file_contents;
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::HashSet;
@@ -13,7 +12,7 @@ struct Pair {
     second: HashSet<u32>,
 }
 
-fn build_pairs<'a>(file_contents: &'a String) -> impl Iterator<Item = Pair> + 'a {
+fn build_pairs<'a>(file_contents: &'a str) -> impl Iterator<Item = Pair> + 'a {
     return file_contents.lines().map(|line| {
         let c = RE.captures(line).unwrap();
         let p = |s: &str| s.parse::<u32>().unwrap();
@@ -24,9 +23,8 @@ fn build_pairs<'a>(file_contents: &'a String) -> impl Iterator<Item = Pair> + 'a
     });
 }
 
-pub fn part_1(file_name: &str) -> String {
-    let contents = get_file_contents(file_name);
-    let pairs = build_pairs(&contents);
+pub fn part_1(file_contents: &str) -> String {
+    let pairs = build_pairs(&file_contents);
     return pairs
         .filter(
             |Pair {
@@ -38,9 +36,8 @@ pub fn part_1(file_name: &str) -> String {
         .to_string();
 }
 
-pub fn part_2(file_name: &str) -> String {
-    let contents = get_file_contents(file_name);
-    let pairs = build_pairs(&contents);
+pub fn part_2(file_contents: &str) -> String {
+    let pairs = build_pairs(&file_contents);
     return pairs
         .filter(|Pair { first, second }| !(first & second).is_empty())
         .count()

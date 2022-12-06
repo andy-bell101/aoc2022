@@ -1,4 +1,4 @@
-use crate::utils::{divide_iterator_on_predicate, get_file_contents};
+use crate::utils::divide_iterator_on_predicate;
 use regex::Regex;
 
 lazy_static! {
@@ -59,16 +59,15 @@ fn perform_moves_part_1(stacks: &mut Vec<Vec<char>>, moves: &Vec<Moves>) -> ()
     }
 }
 
-fn get_stacks_and_moves(file_name: &str) -> (Vec<Vec<char>>, Vec<Moves>) 
+fn get_stacks_and_moves(file_contents: &str) -> (Vec<Vec<char>>, Vec<Moves>) 
 {
-    let contents = get_file_contents(file_name);
-    let v = divide_iterator_on_predicate(contents.lines(), |&s| s == "");
+    let v = divide_iterator_on_predicate(file_contents.lines(), |&s| s == "");
     let (stack_strings, instruction_strings) = (&v[0], &v[1]);
     return (build_stack(&stack_strings), parse_moves(&instruction_strings).collect());
 }
 
-pub fn part_1(file_name: &str) -> String {
-    let (mut stacks, moves) = get_stacks_and_moves(file_name);
+pub fn part_1(file_contents: &str) -> String {
+    let (mut stacks, moves) = get_stacks_and_moves(file_contents);
     perform_moves_part_1(&mut stacks, &moves);
     return stacks.iter().map(|v| v.last().unwrap()).collect();
 }
@@ -89,8 +88,8 @@ fn perform_moves_part_2(stacks: &mut Vec<Vec<char>>, moves: &Vec<Moves>) -> ()
     }
 }
 
-pub fn part_2(file_name: &str) -> String {
-    let (mut stacks, moves) = get_stacks_and_moves(file_name);
+pub fn part_2(file_contents: &str) -> String {
+    let (mut stacks, moves) = get_stacks_and_moves(file_contents);
     perform_moves_part_2(&mut stacks, &moves);
     return stacks.iter().map(|v| v.last().unwrap()).collect();
 }

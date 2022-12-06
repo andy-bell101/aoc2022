@@ -1,7 +1,5 @@
 use std::collections::HashMap;
 
-use crate::utils::get_file_contents;
-
 #[derive(PartialEq, Eq, Hash, Debug, Clone, Copy)]
 enum GameState {
     Lose,
@@ -72,9 +70,8 @@ fn score_game(opponent_hand: &Hands, my_hand: &Hands) -> u64 {
     return SCORES_FOR_GAME_STATE[&game_state] + SCORES_FOR_HAND[my_hand];
 }
 
-pub fn part_1(file_name: &str) -> String {
-    let contents = get_file_contents(file_name);
-    let games: Vec<(Hands, Hands)> = Vec::from_iter(contents.lines().map(|line| {
+pub fn part_1(file_contents: &str) -> String {
+    let games: Vec<(Hands, Hands)> = Vec::from_iter(file_contents.lines().map(|line| {
         (
             parse_chars_to_hands(&line.chars().nth(0).expect("not enough chars on line")),
             parse_chars_to_hands(&line.chars().nth(2).expect("not enough chars on line")),
@@ -95,9 +92,8 @@ fn hand_to_pick_for_desired_game_state(opponent_hand: &Hands, game_state: &GameS
     };
 }
 
-pub fn part_2(file_name: &str) -> String {
-    let contents = get_file_contents(file_name);
-    let games: Vec<(Hands, GameState)> = Vec::from_iter(contents.lines().map(|line| {
+pub fn part_2(file_contents: &str) -> String {
+    let games: Vec<(Hands, GameState)> = Vec::from_iter(file_contents.lines().map(|line| {
         (
             parse_chars_to_hands(&line.chars().nth(0).expect("not enough chars on line")),
             parse_chars_to_game_state(&line.chars().nth(2).expect("not enough chars on line")),
