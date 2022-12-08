@@ -90,3 +90,17 @@ fn day6_part_2_integration_test() {
         .collect();
     assert_eq!(result, vec!["19", "23", "23", "29", "26"]);
 }
+
+#[test]
+fn day7_part_1_integration_test() {
+    let contents = include_str!("example_files/day7.txt");
+    let result = aoc2022::day7::part_1(contents);
+    assert_eq!(result, "95437");
+}
+
+#[test]
+fn day7_part_2_integration_test() {
+    let contents = include_str!("example_files/day7.txt");
+    let result = aoc2022::day7::part_2(contents);
+    assert_eq!(result, "24933642");
+}
