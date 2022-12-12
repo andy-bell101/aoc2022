@@ -75,14 +75,9 @@ pub fn part_1(file_contents: &str) -> String {
 
 fn score_line(iter: impl Iterator<Item = (usize, usize)>, trees: &Vec<Vec<u8>>, cur_height: &u8) -> usize {
     let mut acc = 0;
-    let mut cur_max: i8 = -1;
     for (i, j) in iter {
-        let t = trees[i][j];
-        if cur_max <= t as i8 {
-            cur_max = t as i8;
-            acc += 1;
-        }
-        if t >= *cur_height {
+        acc += 1;
+        if trees[i][j] >= *cur_height {
             break;
         }
     }
@@ -171,7 +166,7 @@ mod tests {
     }
 
     #[test]
-    fn test_score_tree() {
+    fn test_score_tree_provided_example_1() {
         let trees: Vec<Vec<u8>> = vec![
             vec![3,0,3,7,3],
             vec![2,5,5,1,2],
@@ -180,6 +175,17 @@ mod tests {
             vec![3,5,3,9,0],
         ];
         assert_eq!(score_tree(&trees, 1, 2, 5, 5), 4);
+    }
+
+    #[test]
+    fn test_score_tree_provided_example_2() {
+        let trees: Vec<Vec<u8>> = vec![
+            vec![3,0,3,7,3],
+            vec![2,5,5,1,2],
+            vec![6,5,3,3,2],
+            vec![3,3,5,4,9],
+            vec![3,5,3,9,0],
+        ];
         assert_eq!(score_tree(&trees, 3, 2, 5, 5), 8);
     }
 
@@ -195,8 +201,8 @@ mod tests {
         let expected: Vec<Vec<usize>> = vec![
             vec![0,0,0,0,0],
             vec![0,1,4,1,0],
-            vec![0,4,1,2,0],
-            vec![0,1,8,2,0],
+            vec![0,6,1,2,0],
+            vec![0,1,8,3,0],
             vec![0,0,0,0,0],
         ];
         let mut scores: Vec<Vec<usize>> = vec![
