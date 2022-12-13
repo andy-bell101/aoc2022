@@ -132,3 +132,24 @@ fn day9_part_2_integration_test() {
     let result = aoc2022::day9::part_2(contents);
     assert_eq!(result, "36");
 }
+
+#[test]
+fn day10_part_1_integration_test() {
+    let contents = include_str!("example_files/day10.txt");
+    let result = aoc2022::day10::part_1(contents);
+    assert_eq!(result, "13140");
+}
+
+#[test]
+fn day10_part_2_integration_test() {
+    let contents = include_str!("example_files/day10.txt");
+    let result = aoc2022::day10::part_2(contents);
+    let expected = "
+##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....";
+    assert_eq!(result, expected);
+}
