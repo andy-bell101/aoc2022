@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
 extern crate load_file;
+extern crate impl_ops;
 
 mod utils;
 
@@ -61,8 +62,7 @@ macro_rules! runner {
 fn main() {
     let func_map: HashMap<u8, HashMap<u8, (fn(&str) -> String, &str)>> = runner!(
         day1, day2, day3, day4, day5, day6,
-        day7, day8,
-        // day9,
+        day7, day8, day9,
         // day10,
         // day11,
         // day12,
