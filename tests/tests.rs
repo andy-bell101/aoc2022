@@ -153,3 +153,18 @@ fn day10_part_2_integration_test() {
 #######.......#######.......#######.....";
     assert_eq!(result, expected);
 }
+
+#[test]
+fn day11_part_1_integration_test() {
+    let contents = include_str!("example_files/day11.txt");
+    let result = aoc2022::day11::part_1(contents);
+    assert_eq!(result, "10605");
+}
+
+#[test]
+fn day11_part_2_integration_test() {
+    let contents = include_str!("example_files/day11.txt");
+    let result = aoc2022::day11::part_2(contents);
+    let expected = "2713310158";
+    assert_eq!(result, expected);
+}
