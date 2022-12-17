@@ -1,5 +1,3 @@
-use std::convert::TryFrom;
-
 pub fn divide_iterator_on_predicate<'a, I, P, T>(input: I, pred: P) -> Vec<Vec<T>>
 where
     I: IntoIterator<Item = T>,
