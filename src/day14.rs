@@ -1,19 +1,17 @@
 use itertools::*;
 use regex::Captures;
 use regex::Regex;
+use crate::utils::{Point, Grid};
 
 lazy_static! {
     static ref POINT_RE: Regex = Regex::new(r"(\d+),(\d+)").expect("invalid regex");
 }
 
-#[derive(PartialEq, Eq, Debug, Clone, Copy)]
-struct Point(usize, usize);
-
 impl Point {
     fn next_sand_location(
         &self,
-        walls: &ArrayWithCoords<bool>,
-        existing_sand: &ArrayWithCoords<bool>,
+        walls: &Grid<bool>,
+        existing_sand: &Grid<bool>,
     ) -> Option<Self> {
         let Self(x, y) = *self;
         for p in [Point(x, y + 1), Point(x - 1, y + 1), Point(x + 1, y + 1)] {
@@ -27,35 +25,8 @@ impl Point {
 
 const SAND_ORIGIN: Point = Point(500, 0);
 
-#[derive(PartialEq, Eq, Debug)]
-struct ArrayWithCoords<T: PartialEq + Eq + Clone> {
-    min_point: Point,
-    max_point: Point,
-    array: Vec<Vec<T>>,
-}
-
-impl<T: Clone + PartialEq + Eq + std::fmt::Debug + Copy> ArrayWithCoords<T> {
-    fn new(min_point: Point, max_point: Point, init: T) -> Self {
-        let Point(min_x, min_y) = min_point;
-        let Point(max_x, max_y) = max_point;
-        return Self {
-            min_point,
-            max_point,
-            array: vec![vec![init; max_y - min_y + 2]; max_x - min_x + 2],
-        };
-    }
-
-    fn get_value(&self, point: Point) -> &T {
-        return &self.array[point.0 - self.min_point.0][point.1 - self.min_point.1];
-    }
-
-    fn set_value(&mut self, point: Point, value: T) -> () {
-        self.array[point.0 - self.min_point.0][point.1 - self.min_point.1] = value;
-    }
-}
-
 fn parse_wall_lines(input: &str) -> Vec<Vec<Point>> {
-    let parser = |r: &Captures, i| r.get(i).unwrap().as_str().parse::<usize>().unwrap();
+    let parser = |r: &Captures, i| r.get(i).unwrap().as_str().parse::<isize>().unwrap();
     return input
         .lines()
         .map(|line| {
@@ -67,15 +38,15 @@ fn parse_wall_lines(input: &str) -> Vec<Vec<Point>> {
         .collect();
 }
 
-fn range_inclusive(x: usize, y: usize) -> Vec<usize> {
+fn range_inclusive(x: isize, y: isize) -> Vec<isize> {
     if x <= y {
-        return (x..=y).collect::<Vec<usize>>();
+        return (x..=y).collect::<Vec<isize>>();
     } else {
-        return (y..=x).rev().collect::<Vec<usize>>();
+        return (y..=x).rev().collect::<Vec<isize>>();
     }
 }
 
-fn construct_walls(lines: &Vec<Vec<Point>>) -> ArrayWithCoords<bool> {
+fn construct_walls(lines: &Vec<Vec<Point>>) -> Grid<bool> {
     // find minima and maxima
     // sand can form a pyramid that covers the source. The tallest it can be is
     // 2 below the lowest wall. This height also determines the width of the
@@ -101,7 +72,7 @@ fn construct_walls(lines: &Vec<Vec<Point>>) -> ArrayWithCoords<bool> {
     let max_x = x + max_y + 1;
     // initialise the grid, with some padding to allow sand to fall off
     // the edges
-    let mut array = ArrayWithCoords::new(
+    let mut array = Grid::new(
         // can't subtract 1 from min_y since it's always 0
         Point(min_x - 1, min_y),
         Point(max_x + 1, max_y + 1),
@@ -124,8 +95,8 @@ fn construct_walls(lines: &Vec<Vec<Point>>) -> ArrayWithCoords<bool> {
 }
 
 fn simulate_sand_particle_dropping(
-    walls: &ArrayWithCoords<bool>,
-    existing_sand: &mut ArrayWithCoords<bool>,
+    walls: &Grid<bool>,
+    existing_sand: &mut Grid<bool>,
     allowed_to_touch_floor: bool,
 ) -> Option<Point> {
     let mut next_sand = SAND_ORIGIN.clone();
@@ -147,7 +118,7 @@ fn simulate_sand_particle_dropping(
 pub fn part_1(file_contents: &str) -> String {
     let wall_lines = parse_wall_lines(file_contents);
     let walls = construct_walls(&wall_lines);
-    let mut existing_sand = ArrayWithCoords::new(walls.min_point, walls.max_point, false);
+    let mut existing_sand = Grid::new(walls.min_point, walls.max_point, false);
     let mut counter = 0;
     while simulate_sand_particle_dropping(&walls, &mut existing_sand, false).is_some() {
         counter += 1;
@@ -163,7 +134,7 @@ pub fn part_2(file_contents: &str) -> String {
     for i in 0..walls.array.len() {
         walls.array[i][j - 1] = true;
     }
-    let mut existing_sand = ArrayWithCoords::new(walls.min_point, walls.max_point, false);
+    let mut existing_sand = Grid::new(walls.min_point, walls.max_point, false);
     let mut counter = 0;
     while let Some(x) = simulate_sand_particle_dropping(&walls, &mut existing_sand, true) {
         counter += 1;
@@ -193,7 +164,7 @@ mod tests {
             .collect()
     }
 
-    fn print_array(array: &ArrayWithCoords<bool>) -> () {
+    fn print_array(array: &Grid<bool>) -> () {
         println!(
             "{}",
             transpose(array.array.clone())
@@ -219,7 +190,7 @@ mod tests {
 
     #[test]
     fn construct_array_with_coords() {
-        let result = ArrayWithCoords::new(Point(400, 0), Point(500, 10), false);
+        let result = Grid::new(Point(400, 0), Point(500, 10), false);
         assert_eq!(result.array.len(), 102);
         assert_eq!(result.array[0].len(), 12);
         assert!(result
@@ -235,7 +206,7 @@ mod tests {
             "498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9",
         );
-        let mut expected = ArrayWithCoords::new(Point(489, 0), Point(511, 10), false);
+        let mut expected = Grid::new(Point(489, 0), Point(511, 10), false);
         // first wall
         expected.set_value(Point(496, 6), true);
         expected.set_value(Point(497, 6), true);
