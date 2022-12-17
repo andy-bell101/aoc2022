@@ -52,3 +52,11 @@ impl<T: Clone + PartialEq + Eq + std::fmt::Debug + Copy> Grid<T> {
         self.array[(point.0 - self.min_point.0) as usize][(point.1 - self.min_point.1) as usize] = value;
     }
 }
+
+pub fn range_inclusive(x: isize, y: isize) -> Vec<isize> {
+    if x <= y {
+        return (x..=y).collect::<Vec<isize>>();
+    } else {
+        return (y..=x).rev().collect::<Vec<isize>>();
+    }
+}

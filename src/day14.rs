@@ -1,7 +1,7 @@
 use itertools::*;
 use regex::Captures;
 use regex::Regex;
-use crate::utils::{Point, Grid};
+use crate::utils::{Point, Grid, range_inclusive};
 
 lazy_static! {
     static ref POINT_RE: Regex = Regex::new(r"(\d+),(\d+)").expect("invalid regex");
@@ -36,14 +36,6 @@ fn parse_wall_lines(input: &str) -> Vec<Vec<Point>> {
                 .collect()
         })
         .collect();
-}
-
-fn range_inclusive(x: isize, y: isize) -> Vec<isize> {
-    if x <= y {
-        return (x..=y).collect::<Vec<isize>>();
-    } else {
-        return (y..=x).rev().collect::<Vec<isize>>();
-    }
 }
 
 fn construct_walls(lines: &Vec<Vec<Point>>) -> Grid<bool> {
